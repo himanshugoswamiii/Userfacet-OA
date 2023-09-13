@@ -45,3 +45,81 @@ To see the *interactive documentation* for your api endpoints you can go to : `h
 ## USAGE
 - You can create multiple surveys of 20 questions
 - 
+
+1. Create a survey (We need atleast 1 survey to work with)
+
+Example input :
+
+```json
+{
+  "name": "survey-1",
+  "questions" : [
+      "question 1",
+      "question 2",
+      "question 3",
+      "question 4",
+      "question 5",
+      "question 6",
+      "question 7",
+      "question 8",
+      "question 9",
+      "question 10",
+      "question 11",
+      "question 12",
+      "question 13",
+      "question 14",
+      "question 15",
+      "question 16",
+      "question 17",
+      "question 18",
+      "question 10",
+      "question 20"
+    ]
+}
+
+
+```
+
+2. Add responses for the available surveys
+
+Here you'll add the response user by user
+
+```json
+{
+  "candidate_name": "Himanshu",
+  "response": [
+    0,
+    null,
+    1,
+    2,
+    3,
+    4,
+    1,
+    2,
+    3,
+    4,
+    1,
+    2,
+    3,
+    4,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ]
+}
+```
+
+> `null` represents no response for that question
+
+Add more response to see the similarity
+
+3. Calculate the similarities
+
+You've 3 methods for calculating similarities
+
+
+
+

@@ -1,3 +1,4 @@
+# pydantic models allows automatic type checking when data is submit to the api
 from pydantic import BaseModel
 from typing import List, Optional
 
