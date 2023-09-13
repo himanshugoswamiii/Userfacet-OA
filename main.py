@@ -1,37 +1,34 @@
 from fastapi import FastAPI, Path, Query
 from typing import List, Optional
-from uuid import uuid4
 
 # local imports
 from schemas import SurveyCreate, ResponseSubmit
+from utils import pagination, calculate_similarity_score
 
 app = FastAPI()
 
 # Define data structures to store survey questions and candidate responses
-survey_data = []  # List to store survey questions as lists of options (each question is a list)
+survey_data = []  # List to store different surveys (Each survey is stored as a dictionary)
 responses = []  # List to store candidate responses as dictionaries
 
 # 1. Endpoints for Survey Management
 
-# a. List all available surveys
+# 1.a : List all available surveys
 @app.get("/surveys")
 def list_surveys():
     """
-    Endpoint to list all available surveys.
+    list all available surveys.
 
     Returns:
         List: List of survey questions.
     """
     return survey_data
 
-# b. Create a survey with 20 questions
+# 1.b : Create a survey with 20 questions
 @app.post("/surveys")
 def create_survey(survey_create: SurveyCreate):
     """
     Endpoint to create a new survey with a name and 20 questions.
-
-    Args:
-        survey_create (SurveyCreate): Pydantic model containing survey name and questions.
 
     Returns:
         Dict: A message indicating the success or error along with the survey name.
@@ -47,11 +44,8 @@ def create_survey(survey_create: SurveyCreate):
     else:
         return {"error": "Survey must have 20 questions"}
 
-# c. Submit a response for a survey from a user
 
-# ...
-
-# c. Submit a response for a survey from a user
+# 1.c : Submit a response for a survey from a user
 @app.post("/responses/{survey_name}")
 def submit_response(response_submit: ResponseSubmit, survey_name: str = Path(..., title="Name of the survey")):
     """
@@ -76,11 +70,11 @@ def submit_response(response_submit: ResponseSubmit, survey_name: str = Path(...
             "survey_name": survey_name,
             "response": response_submit.response
         })
-        return {"message": "Response submitted successfully"}
+        return {"message": "Response submitted successfully", "candidate_name": response_submit.candidate_name}
     else:
         return {"error": "Response must have 20 answers"}
 
-# d. Get all responses for a specific survey
+# Get all responses for a specific survey
 @app.get("/responses/{survey_name}")
 def get_responses_for_survey(survey_name: str = Path(..., title="Name of the survey")):
     """
@@ -103,13 +97,14 @@ def get_responses_for_survey(survey_name: str = Path(..., title="Name of the sur
 
     return responses_for_survey
 
-# ...
 
 
 # 2. Endpoint for Similarity Calculation
 # a. Calculate similarity among different candidates
+# b. Filter : Calculating similarity between the passed candidate and everyone else
+# Here : candidate_name is optional
 @app.get("/similarity/{survey_name}")
-def calculate_similarity(survey_name: str, candidate_name: Optional[str] = None):
+def calculate_similarity(survey_name: str, candidate_name: Optional[str] = None, page: int = 1, page_size: int = 5):
     """
     Endpoint to calculate similarity among candidate responses for a given survery.
 
@@ -168,46 +163,13 @@ def calculate_similarity(survey_name: str, candidate_name: Optional[str] = None)
         # Return results sorted by similarity (optional)
         similarity_results = sorted(similarity_results, key=lambda x: x["similarity"], reverse=True)
 
-    return similarity_results
-
-def calculate_similarity_score(response1, response2):
-    """
-    Function to calculate similarity score between two sets of responses.
-
-    Args:
-        response1 : List of responses for the first candidate.
-        response2 : List of responses for the second candidate.
-
-    Returns:
-        string: Similarity score (% of matching answers).
-    """
-    if len(response1) != len(response2):
-        raise ValueError("Response lengths do not match")
-
-    # similarity_score = sum(1 for a, b in zip(response1, response2) if a == b)
+    paginated_results = pagination(page, page_size, similarity_results)
+    return paginated_results
 
 
-    similarity_score = 0
-    total = 20
-
-    for (a, b) in zip(response1, response2):
-        if a is None or b is None: # leave the none values
-            total = total-1
-        else:
-            if a == b:
-                similarity_score += 1
-
-    if total == 0:
-        return "0%" # there is no similarity 
-        #(for the case when first half given by candidate 1 is None and second half given by candidate 2 is None)
-
-    percentage = similarity_score / total * 100
-    formatted_percentage = f"{percentage:.2f}%"
-    return formatted_percentage
-
-# Endpoint to find similarity between candidates with names containing a query parameter
+# 2.d : Endpoint to find similarity between candidates with names containing a query parameter
 @app.get("/{survey_name}/search")
-async def search_similarity( survey_name: str, search_text: str = Query(..., title="Candidate name query to search for similarities")):
+async def search_similarity( survey_name: str, search_text: str = Query(..., title="Candidate name query to search for similarities"), page: int = 1, page_size: int = 5):
     """
     Endpoint to find similarity between candidates for a specific survey based on a candidate name query.
 
@@ -247,5 +209,6 @@ async def search_similarity( survey_name: str, search_text: str = Query(..., tit
 
     # Return results sorted by similarity (optional)
     similarity_results = sorted(similarity_results, key=lambda x: x["similarity"], reverse=True)
-    return similarity_results
 
+    paginated_results = pagination(page, page_size, similarity_results)
+    return paginated_results
