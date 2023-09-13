@@ -88,6 +88,8 @@ Example input :
 
 Here you'll add the response user by user
 
+![Adding-response](https://github.com/himanshugoswamiii/Userfacet-OA/blob/main/assets/02-adding-response-for-survey.png)
+
 ```json
 {
   "candidate_name": "Himanshu",
@@ -122,8 +124,8 @@ Add more response to see the similarity
 
 #### 3. Calculate the similarities
 
+![Calc-similarity](https://github.com/himanshugoswamiii/Userfacet-OA/blob/main/assets/03-calculate-similarity-for-all.png)
+
 You've 3 methods for calculating similarities
 
-
-
-
+> Note: I've not covered everythin in this sample. Please see the interactive documentation for all the options
