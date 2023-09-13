@@ -42,11 +42,15 @@ To see the *interactive documentation* for your api endpoints you can go to : `h
 
 ---
 
-## USAGE
+## SAMPLE USAGE 
 - You can create multiple surveys of 20 questions
-- 
+- You can get the similarity for particular survey
 
-1. Create a survey (We need atleast 1 survey to work with)
+Use interactive documentation
+
+#### 1. Create a survey (We need atleast 1 survey to work with)
+
+![Create-surveys](https://github.com/himanshugoswamiii/Userfacet-OA/blob/main/assets/01-create-surveys.png)
 
 Example input :
 
@@ -80,7 +84,7 @@ Example input :
 
 ```
 
-2. Add responses for the available surveys
+#### 2. Add responses for the available surveys
 
 Here you'll add the response user by user
 
@@ -116,7 +120,7 @@ Here you'll add the response user by user
 
 Add more response to see the similarity
 
-3. Calculate the similarities
+#### 3. Calculate the similarities
 
 You've 3 methods for calculating similarities
 
