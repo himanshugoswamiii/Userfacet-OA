@@ -1,22 +1,15 @@
 from fastapi import FastAPI, Path, Query
 from typing import List, Optional
-from pydantic import BaseModel
 from uuid import uuid4
+
+# local imports
+from schemas import SurveyCreate, ResponseSubmit
 
 app = FastAPI()
 
 # Define data structures to store survey questions and candidate responses
 survey_data = []  # List to store survey questions as lists of options (each question is a list)
 responses = []  # List to store candidate responses as dictionaries
-
-# Pydantic models
-class SurveyCreate(BaseModel):
-    name: str
-    questions: List[str]
-
-class ResponseSubmit(BaseModel):
-    candidate_name: str
-    response: List[Optional[int]]
 
 # 1. Endpoints for Survey Management
 
