@@ -128,4 +128,4 @@ Add more response to see the similarity
 
 You've 3 methods for calculating similarities
 
-> Note: I've not covered everythin in this sample. Please see the interactive documentation for all the options
+> Note: I've not covered everything in this sample usage. Please see the interactive documentation for all the options
