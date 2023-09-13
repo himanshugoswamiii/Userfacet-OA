@@ -1,5 +1,5 @@
 ## Task of the project
-Task : (https://github.com/himanshugoswamiii/Userfacet-OA/blob/main/assets/Backend-Develoment-Assessment.pdf)
+Task : https://github.com/himanshugoswamiii/Userfacet-OA/blob/main/assets/Backend-Develoment-Assessment.pdf
 
 
 ---
@@ -39,3 +39,9 @@ uvicorn main:app --reload
 
 ## Documentation for the project
 To see the *interactive documentation* for your api endpoints you can go to : `http://127.0.0.1:8000/docs`
+
+---
+
+## USAGE
+- You can create multiple surveys of 20 questions
+- 
